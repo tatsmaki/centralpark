@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { IObject } from "../../interfaces/object";
 import { RootState } from "@react-three/fiber";
+import { Vector3 } from "three";
+import { IObject } from "../../interfaces/object";
 import { getSavedObjects } from "../../helpers/get_saved_objects";
 
 interface IEditor {
@@ -9,6 +10,7 @@ interface IEditor {
   is3D: boolean;
   setObject(object: IObject): void;
   removeObject(uuid: string): void;
+  updateObject(uuid: string, position: Vector3): void;
   setStore(store: RootState): void;
   set3D(value: boolean): void;
 }
@@ -22,6 +24,16 @@ export const useEditor = create<IEditor>((set, get) => ({
   },
   removeObject(uuid) {
     set({ objects: get().objects.filter((object) => uuid !== object.uuid) });
+  },
+  updateObject(uuid, position) {
+    set({
+      objects: get().objects.map((object) => {
+        if (object.uuid === uuid) {
+          return { ...object, position };
+        }
+        return object;
+      }),
+    });
   },
   setStore(store) {
     const item = localStorage.getItem("camera");

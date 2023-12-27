@@ -12,12 +12,14 @@
     "@react-three/drei": "^9.92.6",
     "@react-three/fiber": "^8.15.12",
     "@types/three": "^0.160.0",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.160.0",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",

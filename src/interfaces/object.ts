@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
 
 export interface IObject {
-  uuid?: string;
+  uuid: string;
   id: string;
   name: string;
   image_url: string;

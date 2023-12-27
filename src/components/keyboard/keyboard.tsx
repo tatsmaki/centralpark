@@ -6,6 +6,7 @@ const map: KeyboardControlsEntry[] = [
   { name: "back", keys: ["KeyS"] },
   { name: "left", keys: ["KeyA"] },
   { name: "right", keys: ["KeyD"] },
+  { name: "cancel", keys: ["Escape"] },
 ];
 
 export const Keyboard = ({ children }: PropsWithChildren) => {

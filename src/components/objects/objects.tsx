@@ -5,6 +5,7 @@ import "./objects.scss";
 
 const objects: IObject[] = [
   {
+    uuid: "",
     id: "1",
     name: "fern plant",
     image_url: "/plant_bush.png",
@@ -13,6 +14,7 @@ const objects: IObject[] = [
     position: new Vector3(),
   },
   {
+    uuid: "",
     id: "2",
     name: "watermelon plant",
     image_url: "/watermelon_bush.png",
