@@ -1,8 +1,8 @@
-import { useEditor } from "../../services/editor";
+import { useMode } from "../../services/editor";
 import "./footer.scss";
 
 export const Footer = () => {
-  const { is3D, set3D } = useEditor();
+  const { is3D, set3D } = useMode();
 
   const handle3D = () => {
     set3D(true);

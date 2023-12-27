@@ -9,7 +9,7 @@ import { useEditor } from "../../../services/editor";
 
 const debouncedChange = debounce((uuid: string, position: Vector3) => {
   useEditor.getState().updateObject(uuid, position);
-}, 1000);
+}, 500);
 
 export const Object = ({ object }: ObjectProps) => {
   const [isHover, setIsHover] = useState(false);

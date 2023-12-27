@@ -4,11 +4,13 @@ import "./header.scss";
 
 export const Header = () => {
   const { selected } = useSelect();
+  const { hasChanges } = useEditor();
 
   const handleSave = () => {
-    const { objects, store } = useEditor.getState();
+    const { objects, store, setChanges } = useEditor.getState();
 
     localStorage.setItem("objects", JSON.stringify(objects));
+    setChanges(false);
 
     if (store) {
       const { position, rotation } = store.camera;
@@ -22,7 +24,11 @@ export const Header = () => {
 
   return (
     <header className="header">
-      <button className="header__save" onClick={handleSave}>
+      <button
+        className="header__save"
+        disabled={!hasChanges}
+        onClick={handleSave}
+      >
         <span>💾</span> Save
       </button>
       <button
