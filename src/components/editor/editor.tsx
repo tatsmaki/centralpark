@@ -11,7 +11,10 @@ import { getPointer } from "../../helpers/get_pointer";
 import { useSelect } from "../../services/select";
 import "./editor.scss";
 
-const gl: CanvasProps["gl"] = { alpha: true, antialias: false };
+const gl: Partial<CanvasProps["gl"]> = {
+  alpha: true,
+  antialias: true,
+};
 
 const camera = new PerspectiveCamera(75);
 camera.position.set(0, 3, 10);
@@ -67,7 +70,7 @@ const EditorComponent = () => {
         autoFocus
         gl={gl}
         camera={camera}
-        shadows="soft"
+        shadows
         onCreated={setStore}
       >
         <OrbitControls
@@ -75,12 +78,12 @@ const EditorComponent = () => {
           maxPolarAngle={is3D ? Math.PI / 2.1 : -Math.PI / 2}
           minAzimuthAngle={is3D ? undefined : 0}
           maxAzimuthAngle={is3D ? undefined : 0}
-          minDistance={5}
+          minDistance={3}
           maxDistance={20}
           enableRotate={is3D}
         />
-        <ambientLight />
-        <pointLight castShadow />
+        <ambientLight intensity={0.5} />
+        <directionalLight castShadow intensity={0.5} position={[10, 10, -10]} />
         <group name="objects">
           {objects.map((object) => (
             <Suspense

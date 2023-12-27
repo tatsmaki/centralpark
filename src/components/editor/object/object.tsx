@@ -26,6 +26,10 @@ const ObjectComponent = ({ object }: ObjectProps) => {
     if (position) {
       gltf.scene.position.set(position.x, position.y, position.z);
     }
+    gltf.scene.traverse((child) => {
+      child.castShadow = true;
+    });
+
     return gltf.scene.clone();
   }, [gltf, object]);
 
@@ -59,6 +63,7 @@ const ObjectComponent = ({ object }: ObjectProps) => {
   return (
     <group>
       <primitive
+        castShadow
         object={scene}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
