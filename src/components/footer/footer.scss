@@ -1,0 +1,22 @@
+.footer {
+  grid-area: footer;
+  padding: 12px;
+
+  button {
+    padding: 6px 12px;
+    background-color: white;
+    border-radius: 0;
+    border: 1px #c5c5c5 solid;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  &__3d,
+  &__perspective {
+    &--active {
+      background-color: #8ccbff !important;
+      border: 1px #8ccbff solid !important;
+    }
+  }
+}

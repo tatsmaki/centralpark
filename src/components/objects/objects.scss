@@ -1,0 +1,14 @@
+.objects {
+  grid-area: objects;
+  width: 320px;
+  box-sizing: border-box;
+  padding: 12px;
+
+  &__list {
+    margin-top: 12px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,16 @@
+.object {
+  width: 100%;
+  cursor: grab;
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+
+  &__name {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
