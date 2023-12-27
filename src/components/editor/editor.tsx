@@ -1,4 +1,4 @@
-import { DragEvent } from "react";
+import { DragEvent, Suspense } from "react";
 import { Canvas, CanvasProps } from "@react-three/fiber";
 import { OrbitControls, Sky } from "@react-three/drei";
 import { Ground } from "./ground";
@@ -71,8 +71,17 @@ export const Editor = () => {
           <ambientLight />
           <pointLight castShadow />
           <group name="objects">
-            {objects.map((object, index) => (
-              <Object key={index} object={object} />
+            {objects.map((object) => (
+              <Suspense
+                key={object.uuid}
+                fallback={
+                  <mesh position={object.position}>
+                    <boxGeometry args={[1, 1, 1]} />
+                  </mesh>
+                }
+              >
+                <Object object={object} />
+              </Suspense>
             ))}
           </group>
           <Sky distance={450000} sunPosition={[0, 1, 0]} azimuth={0.25} />
