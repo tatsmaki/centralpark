@@ -7,5 +7,5 @@ export interface IObject {
   image_url: string;
   object_url: string;
   scale?: number;
-  position?: Vector3;
+  position: Vector3;
 }

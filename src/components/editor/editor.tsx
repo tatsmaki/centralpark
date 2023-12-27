@@ -9,6 +9,7 @@ import "./editor.scss";
 import { getPointer } from "../../helpers/get_pointer";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import { PerspectiveCamera } from "three";
+import { ObjectLoader } from "./object_loader";
 
 const gl: CanvasProps["gl"] = { alpha: true, antialias: false };
 
@@ -74,11 +75,7 @@ export const Editor = () => {
             {objects.map((object) => (
               <Suspense
                 key={object.uuid}
-                fallback={
-                  <mesh position={object.position}>
-                    <boxGeometry args={[1, 1, 1]} />
-                  </mesh>
-                }
+                fallback={<ObjectLoader position={object.position} />}
               >
                 <Object object={object} />
               </Suspense>
