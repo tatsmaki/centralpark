@@ -1,20 +1,19 @@
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { TransformControls, useCursor, useGLTF } from "@react-three/drei";
 import { Vector3 } from "three";
 import debounce from "lodash.debounce";
 import { ObjectProps } from "./object.types";
 import { useSelect } from "../../../services/select";
-
 import { useEditor } from "../../../services/editor";
 
 const debouncedChange = debounce((uuid: string, position: Vector3) => {
   useEditor.getState().updateObject(uuid, position);
 }, 500);
 
-export const Object = ({ object }: ObjectProps) => {
+const ObjectComponent = ({ object }: ObjectProps) => {
   const [isHover, setIsHover] = useState(false);
   useCursor(isHover);
-  const { selected, select, deselect } = useSelect();
+  const { selected } = useSelect();
   const isSelected = selected === object.uuid;
 
   const gltf = useGLTF(object.object_url);
@@ -30,21 +29,21 @@ export const Object = ({ object }: ObjectProps) => {
     return gltf.scene.clone();
   }, [gltf, object]);
 
-  const handlePointerOver = () => {
+  const handlePointerOver = useCallback(() => {
     setIsHover(true);
-  };
+  }, []);
 
-  const handlePointerOut = () => {
+  const handlePointerOut = useCallback(() => {
     setIsHover(false);
-  };
+  }, []);
 
-  const handlePointerUp = () => {
+  const handlePointerUp = useCallback(() => {
     if (isSelected) {
-      deselect();
+      useSelect.getState().deselect();
     } else {
-      select(object.uuid);
+      useSelect.getState().select(object.uuid);
     }
-  };
+  }, [isSelected, object]);
 
   const handleChange = useCallback(() => {
     const isChanged =
@@ -55,7 +54,7 @@ export const Object = ({ object }: ObjectProps) => {
     if (isChanged) {
       debouncedChange(object.uuid, scene.position);
     }
-  }, [scene, object]);
+  }, [scene.position, object]);
 
   return (
     <group>
@@ -75,3 +74,5 @@ export const Object = ({ object }: ObjectProps) => {
     </group>
   );
 };
+
+export const Object = memo(ObjectComponent);

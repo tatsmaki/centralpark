@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { useEditor } from "../../services/editor";
 import { useSelect } from "../../services/select";
 import "./header.scss";
 
-export const Header = () => {
+const HeaderComponent = () => {
   const { selected } = useSelect();
   const { hasChanges } = useEditor();
 
@@ -41,3 +42,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export const Header = memo(HeaderComponent);

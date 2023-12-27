@@ -1,23 +1,23 @@
-import { DragEvent, Suspense, useEffect } from "react";
+import { DragEvent, Suspense, memo, useCallback, useEffect } from "react";
 import { Canvas, CanvasProps } from "@react-three/fiber";
 import { OrbitControls, Sky, useKeyboardControls } from "@react-three/drei";
+import { PerspectiveCamera } from "three";
+import { generateUUID } from "three/src/math/MathUtils.js";
 import { Ground } from "./ground";
 import { Object } from "./object";
-import { useEditor, useMode } from "../../services/editor";
-import "./editor.scss";
-import { getPointer } from "../../helpers/get_pointer";
-import { generateUUID } from "three/src/math/MathUtils.js";
-import { PerspectiveCamera } from "three";
 import { ObjectLoader } from "./object_loader";
+import { useEditor, useMode } from "../../services/editor";
+import { getPointer } from "../../helpers/get_pointer";
 import { useSelect } from "../../services/select";
+import "./editor.scss";
 
 const gl: CanvasProps["gl"] = { alpha: true, antialias: false };
 
 const camera = new PerspectiveCamera(75);
 camera.position.set(0, 3, 10);
 
-export const Editor = () => {
-  const { objects } = useEditor();
+const EditorComponent = () => {
+  const { objects, setStore } = useEditor();
   const { is3D } = useMode();
   const [sub] = useKeyboardControls();
 
@@ -30,11 +30,11 @@ export const Editor = () => {
     );
   }, [sub]);
 
-  const handleDragOver = (event: DragEvent) => {
+  const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
-  };
+  }, []);
 
-  const handleDrop = (event: DragEvent) => {
+  const handleDrop = useCallback((event: DragEvent) => {
     const data = event.dataTransfer.getData("text");
     const { store } = useEditor.getState();
 
@@ -58,7 +58,7 @@ export const Editor = () => {
         });
       }
     }
-  };
+  }, []);
 
   return (
     <div className="editor" onDragOver={handleDragOver} onDrop={handleDrop}>
@@ -68,7 +68,7 @@ export const Editor = () => {
         gl={gl}
         camera={camera}
         shadows="soft"
-        onCreated={useEditor.getState().setStore}
+        onCreated={setStore}
       >
         <OrbitControls
           makeDefault
@@ -97,3 +97,5 @@ export const Editor = () => {
     </div>
   );
 };
+
+export const Editor = memo(EditorComponent);

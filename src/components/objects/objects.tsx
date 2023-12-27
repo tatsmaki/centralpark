@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Vector3 } from "three";
 import { IObject } from "../../interfaces/object";
 import { Object } from "./object";
@@ -23,7 +24,7 @@ const objects: IObject[] = [
   },
 ];
 
-export const Objects = () => {
+const ObjectsComponent = () => {
   return (
     <div className="objects">
       <span>Objects</span>
@@ -35,3 +36,5 @@ export const Objects = () => {
     </div>
   );
 };
+
+export const Objects = memo(ObjectsComponent);

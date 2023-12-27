@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useMode } from "../../services/editor";
 import "./footer.scss";
 
-export const Footer = () => {
+const FooterComponent = () => {
   const { is3D, set3D } = useMode();
 
   const handle3D = () => {
@@ -31,3 +32,5 @@ export const Footer = () => {
     </div>
   );
 };
+
+export const Footer = memo(FooterComponent);
