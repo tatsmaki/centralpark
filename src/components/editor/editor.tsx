@@ -1,15 +1,15 @@
-import { DragEvent, Suspense, memo, useCallback, useEffect } from "react";
+import { DragEvent, Suspense, memo, useCallback } from "react";
 import { Canvas, CanvasProps } from "@react-three/fiber";
-import { OrbitControls, Sky, useKeyboardControls } from "@react-three/drei";
+import { Sky } from "@react-three/drei";
 import { PerspectiveCamera } from "three";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import { Ground } from "./ground";
 import { Object } from "./object";
 import { ObjectLoader } from "./object_loader";
-import { useEditor, useMode } from "../../services/editor";
+import { useEditor } from "../../services/editor";
 import { getPointer } from "../../helpers/get_pointer";
-import { useSelect } from "../../services/select";
 import "./editor.scss";
+import { Controls } from "./controls";
 
 const gl: Partial<CanvasProps["gl"]> = {
   alpha: true,
@@ -21,17 +21,6 @@ camera.position.set(0, 3, 10);
 
 const EditorComponent = () => {
   const { objects, setStore } = useEditor();
-  const { is3D } = useMode();
-  const [sub] = useKeyboardControls();
-
-  useEffect(() => {
-    return sub(
-      (state) => state.cancel,
-      (pressed) => {
-        pressed && useSelect.getState().deselect();
-      }
-    );
-  }, [sub]);
 
   const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
@@ -73,15 +62,7 @@ const EditorComponent = () => {
         shadows
         onCreated={setStore}
       >
-        <OrbitControls
-          makeDefault
-          maxPolarAngle={is3D ? Math.PI / 2.1 : -Math.PI / 2}
-          minAzimuthAngle={is3D ? undefined : 0}
-          maxAzimuthAngle={is3D ? undefined : 0}
-          minDistance={3}
-          maxDistance={20}
-          enableRotate={is3D}
-        />
+        <Controls />
         <ambientLight intensity={0.5} />
         <directionalLight castShadow intensity={0.5} position={[10, 10, -10]} />
         <group name="objects">
