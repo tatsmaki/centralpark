@@ -1,3 +1,4 @@
+import { DoubleSide } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 export const Ground = () => {
@@ -10,7 +11,7 @@ export const Ground = () => {
       receiveShadow
     >
       <planeGeometry args={[10, 10]} />
-      <meshStandardMaterial color={0xc9ff8b} />
+      <meshStandardMaterial color={0xc9ff8b} side={DoubleSide} />
     </mesh>
   );
 };
