@@ -1,5 +1,5 @@
-import { IObject } from "../../../interfaces/object";
+import { IMesh } from "../../../interfaces/mesh";
 
 export type ObjectProps = {
-  object: IObject;
+  mesh: IMesh;
 };

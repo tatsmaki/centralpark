@@ -8,9 +8,9 @@ const HeaderComponent = () => {
   const { hasChanges } = useEditor();
 
   const handleSave = () => {
-    const { objects, store, setChanges } = useEditor.getState();
+    const { meshes, store, setChanges } = useEditor.getState();
 
-    localStorage.setItem("objects", JSON.stringify(objects));
+    localStorage.setItem("meshes", JSON.stringify(meshes));
     setChanges(false);
 
     if (store) {

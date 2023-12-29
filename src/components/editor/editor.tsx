@@ -20,7 +20,7 @@ const camera = new PerspectiveCamera(75);
 camera.position.set(0, 3, 10);
 
 const EditorComponent = () => {
-  const { objects, setStore } = useEditor();
+  const { meshes, setStore } = useEditor();
 
   const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
@@ -43,7 +43,7 @@ const EditorComponent = () => {
         const position = intersection.point;
         position.y = 0;
 
-        useEditor.getState().setObject({
+        useEditor.getState().setMesh({
           ...object,
           uuid: generateUUID(),
           position,
@@ -65,13 +65,13 @@ const EditorComponent = () => {
         <Controls />
         <ambientLight intensity={0.5} />
         <directionalLight castShadow intensity={0.5} position={[10, 10, -10]} />
-        <group name="objects">
-          {objects.map((object) => (
+        <group name="meshes">
+          {meshes.map((mesh) => (
             <Suspense
-              key={object.uuid}
-              fallback={<ObjectLoader position={object.position} />}
+              key={mesh.uuid}
+              fallback={<ObjectLoader position={mesh.position} />}
             >
-              <Object object={object} />
+              <Object mesh={mesh} />
             </Suspense>
           ))}
         </group>

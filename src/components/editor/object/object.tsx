@@ -10,28 +10,29 @@ const debouncedChange = debounce((uuid: string, position: Vector3) => {
   useEditor.getState().updateObject(uuid, position);
 }, 500);
 
-const ObjectComponent = ({ object }: ObjectProps) => {
+const ObjectComponent = ({ mesh }: ObjectProps) => {
   const [isHover, setIsHover] = useState(false);
   useCursor(isHover);
   const { selected } = useSelect();
-  const isSelected = selected === object.uuid;
+  const isSelected = selected === mesh.uuid;
 
-  const gltf = useGLTF(object.object_url);
+  const { scene } = useGLTF(mesh.object_url);
 
-  const scene = useMemo(() => {
-    const { scale, position } = object;
+  const gltf = useMemo(() => {
+    const { scale, position } = mesh;
+
     if (scale) {
-      gltf.scene.scale.set(scale, scale, scale);
+      scene.scale.set(scale, scale, scale);
     }
     if (position) {
-      gltf.scene.position.set(position.x, position.y, position.z);
+      scene.position.set(position.x, position.y, position.z);
     }
-    gltf.scene.traverse((child) => {
+    scene.traverse((child) => {
       child.castShadow = true;
     });
 
-    return gltf.scene.clone();
-  }, [gltf, object]);
+    return scene.clone();
+  }, [scene, mesh]);
 
   const handlePointerOver = useCallback(() => {
     setIsHover(true);
@@ -45,26 +46,26 @@ const ObjectComponent = ({ object }: ObjectProps) => {
     if (isSelected) {
       useSelect.getState().deselect();
     } else {
-      useSelect.getState().select(object.uuid);
+      useSelect.getState().select(mesh.uuid);
     }
-  }, [isSelected, object]);
+  }, [isSelected, mesh]);
 
   const handleChange = useCallback(() => {
     const isChanged =
-      object.position.x !== scene.position.x ||
-      object.position.y !== scene.position.y ||
-      object.position.z !== scene.position.z;
+      mesh.position.x !== gltf.position.x ||
+      mesh.position.y !== gltf.position.y ||
+      mesh.position.z !== gltf.position.z;
 
     if (isChanged) {
-      debouncedChange(object.uuid, scene.position);
+      debouncedChange(mesh.uuid, gltf.position);
     }
-  }, [scene.position, object]);
+  }, [gltf.position, mesh]);
 
   return (
     <group>
       <primitive
         castShadow
-        object={scene}
+        object={gltf}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onPointerUp={handlePointerUp}
@@ -72,7 +73,7 @@ const ObjectComponent = ({ object }: ObjectProps) => {
       {isSelected && (
         <TransformControls
           mode="translate"
-          object={scene}
+          object={gltf}
           onChange={handleChange}
         />
       )}

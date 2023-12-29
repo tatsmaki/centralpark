@@ -12,6 +12,7 @@
     "@react-three/drei": "^9.92.6",
     "@react-three/fiber": "^8.15.12",
     "@types/three": "^0.160.0",
+    "firebase": "^10.7.1",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

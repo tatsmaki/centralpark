@@ -1,17 +1,17 @@
 import { create } from "zustand";
 import { RootState } from "@react-three/fiber";
 import { Vector3 } from "three";
-import { IObject } from "../../interfaces/object";
-import { getSavedObjects } from "../../helpers/get_saved_objects";
+import { getSavedMeshes } from "../../helpers/get_saved_meshes";
 import { getSavedCamera } from "../../helpers/get_saved_camera";
+import { IMesh } from "../../interfaces/mesh";
 
 interface IEditor {
   store: RootState | null;
   hasChanges: boolean;
-  objects: IObject[];
+  meshes: IMesh[];
   setStore(store: RootState): void;
   setChanges(value: boolean): void;
-  setObject(object: IObject): void;
+  setMesh(mesh: IMesh): void;
   removeObject(uuid: string): void;
   updateObject(uuid: string, position: Vector3): void;
 }
@@ -19,7 +19,7 @@ interface IEditor {
 export const useEditor = create<IEditor>((set, get) => ({
   store: null,
   hasChanges: false,
-  objects: getSavedObjects(),
+  meshes: getSavedMeshes(),
   setStore(store) {
     getSavedCamera(store);
     set({ store });
@@ -27,22 +27,22 @@ export const useEditor = create<IEditor>((set, get) => ({
   setChanges(value) {
     set({ hasChanges: value });
   },
-  setObject(object) {
-    set({ objects: [...get().objects, object], hasChanges: true });
+  setMesh(mesh) {
+    set({ meshes: [...get().meshes, mesh], hasChanges: true });
   },
   removeObject(uuid) {
     set({
-      objects: get().objects.filter((object) => uuid !== object.uuid),
+      meshes: get().meshes.filter((mesh) => uuid !== mesh.uuid),
       hasChanges: true,
     });
   },
   updateObject(uuid, position) {
     set({
-      objects: get().objects.map((object) => {
-        if (object.uuid === uuid) {
-          return { ...object, position };
+      meshes: get().meshes.map((mesh) => {
+        if (mesh.uuid === uuid) {
+          return { ...mesh, position };
         }
-        return object;
+        return mesh;
       }),
       hasChanges: true,
     });
